@@ -1,5 +1,7 @@
 from flask import Flask
 from flask import render_template
+from flask import request
+from flask import redirect
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
 
@@ -14,6 +16,27 @@ mysql = MySQL(app)
 @app.route("/")
 def index():
     return render_template("index.html")
+
+@app.route("/addincidents", methods=["GET", "POST"])
+def addincidents():
+    cur = mysql.connection.cursor()
+    if request.method == "POST":
+        type = request.form["type"]
+        description = request.form["description"]
+        affected_areas = request.form["affectedAreas"]
+        timestamp = request.form["timeStamp"]
+        status = request.form["status"]
+        add_query = "INSERT INTO Incidents (Type, Description, AffectedAreas, Timestamp, Status) VALUES (%s, %s, %s, %s, %s)"
+
+        cur.execute(add_query, (type, description, affected_areas, timestamp, status))
+
+        mysql.connection.commit()
+
+        return redirect("/Incidents")
+    
+    else:
+        return render_template("addincidents.html", addincidents="", action="addincidents")  
+    
 
 @app.route("/Incidents")
 def Incidents():
