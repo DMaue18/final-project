@@ -32,6 +32,10 @@
                             <td>{{ incident["AffectedAreas"] }}</td>
                             <td>{{ incident["TimeStamp"] }}</td>
                             <td>{{ incident["Status"] }}</td>
+                            <td>
+                              <a href="incident/{{incident['IncidentID']}}" class="btn btn-info">Update</a>&nbsp;&nbsp;
+                              <a href="incident/delete/{{incident['IncidentID']}}" class="btn tbtn-danger">Delete</a>
+                            </td>
                         </tr>
                     {% endfor %}
                 </tbody>
